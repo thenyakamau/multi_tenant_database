@@ -45,7 +45,13 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware(['web', 'check.master.domain'])
                 ->namespace($this->namespace)
+                ->domain(config('tenant.master_domain'))
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware(['tenant', 'web'])
+                ->namespace($this->namespace)
+                ->domain('{subdomain}.' . config('tenant.master_domain'))
+                ->group(base_path('routes/tenant.php'));
         });
     }
 

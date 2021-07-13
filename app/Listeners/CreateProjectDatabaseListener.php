@@ -10,7 +10,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 
-class CreateProjectDatabaseListener
+class CreateProjectDatabaseListener implements ShouldQueue
 {
 
     // use CreateDataBaseTrait;

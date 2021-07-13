@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\CustomDataBaseConnector;
 use App\Models\Project;
 use Illuminate\Console\Command;
+use Illuminate\Queue\Connectors\DatabaseConnector;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -52,17 +54,8 @@ class TenantsMigrate extends Command
     function execCommand(Project $project)
     {
         $command = 'migrate';
-        // Config::set('database.connections.mysql.database', $project->db_name);
-        // Config(['database.connections.onthefly' => [
-        //     'driver' => 'mysql',
-        //     'host' => $project->db_host,
-        //     'port' => $project->db_port,
-        //     'database' => $project->db_name,
-        //     'username' => $project->db_user,
-        //     'password' => $project->db_password
-        // ]]);
-        // DB::connection('onthefly');
-        $project->configure($project->db_name)->use();
+        $connector = new CustomDataBaseConnector();
+        $connector->configure($project->db_name)->use();
         $this->info("Connecting to database {$project->db_name}");
         Artisan::call($command, [
             '--force' => true,
